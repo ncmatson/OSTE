@@ -1,0 +1,48 @@
+<!-- <!DOCTYPE html>
+
+<html>
+  <title>TEST</title>
+  <head>
+    <title>yes</title>
+  </head>
+  <body>
+    <div id='map'></div>
+    <script src='inter.js'></script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>A simple map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpdHRkOWk0ZDAwMTUzMG4yM2g5Nmhtb2wifQ.O-5kuQ4vKzy0lcuqMAbBMA';
+var map = L.mapbox.map('map', 'digitalglobe.nal0g75k')
+    .setView([40, -74.50], 9);
+
+    var layers = {
+        "DG Maps API: Recent Imagery with Streets": L.mapbox.tileLayer('digitalglobe.nal0mpda'),
+            "DG Maps API: Recent Imagery": L.mapbox.tileLayer('digitalglobe.nal0g75k'),
+            "DG Maps API: Terrain Map":
+    L.mapbox.tileLayer('digitalglobe.nako1fhg'),
+            "DG Maps API: Street Map":
+    L.mapbox.tileLayer('digitalglobe.nako6329')
+    };
+
+    L.control.layers(layers, null, {
+        collapsed: false
+    }).addTo(map);
+</script>
+</body>
+</html>

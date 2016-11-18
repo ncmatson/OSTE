@@ -1,5 +1,7 @@
 https://api.mapbox.com/v4/{mapid}/{lon},{lat},{z}/{width}x{height}.{format}?access_token=your-access-token
 
+pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpdHRkOWk0ZDAwMTUzMG4yM2g5Nmhtb2wifQ.O-5kuQ4vKzy0lcuqMAbBMA
+
 Recent Imagery	digitalglobe.nal0g75k
 Street Map	digitalglobe.nako6329
 Terrain Map	digitalglobe.nako1fhg
