@@ -1,4 +1,4 @@
-import urllib
+import urllib.request
 import time
 
 access_token = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpdHRkOWk0ZDAwMTUzMG4yM2g5Nmhtb2wifQ.O-5kuQ4vKzy0lcuqMAbBMA'
@@ -21,4 +21,4 @@ dest = '../img/'+str(int(time.time()))+'.jpg'
 
 picture_id = 'digitalglobe.nako1fhg'
 url = 'https://api.mapbox.com/v4/'+picture_id+'/'+loc+'/'+size+'.'+form+'?access_token='+access_token
-urllib.urlretrieve(url, dest)
+urllib.resquest.urlretrieve(url, dest)
