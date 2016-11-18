@@ -9,3 +9,5 @@ t = r+g+b;
 
 subplot(1,2,1);imshow(i);
 subplot(1,2,2);imshow(t);
+
+%this works!
