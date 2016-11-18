@@ -1,4 +1,5 @@
 import urllib
+import time
 
 access_token = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpdHRkOWk0ZDAwMTUzMG4yM2g5Nmhtb2wifQ.O-5kuQ4vKzy0lcuqMAbBMA'
 lon = 86.925
@@ -16,10 +17,8 @@ size
 
 form = 'png256'
 
+dest = '../img/'+str(int(time.time()))+'.png'
+
 picture_id = 'nal0g75k'
-#url1 = 'https://api.mapbox.com/v4/digitalglobe.nal0g75k/86.925,27.9878,10/450x450.png256?access_token=pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpdHRkOWk0ZDAwMTUzMG4yM2g5Nmhtb2wifQ.O-5kuQ4vKzy0lcuqMAbBMA'
 url = 'https://api.mapbox.com/v4/digitalglobe.'+picture_id+'/'+loc+'/'+size+'.'+form+'?access_token='+access_token
-#print url1
-#print url2
-#print (url1==url2)
-urllib.urlretrieve(url, "local.png")
+urllib.urlretrieve(url, dest)
