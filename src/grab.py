@@ -21,4 +21,4 @@ dest = '../img/'+str(int(time.time()))+'.jpg'
 
 picture_id = 'digitalglobe.nako1fhg'
 url = 'https://api.mapbox.com/v4/'+picture_id+'/'+loc+'/'+size+'.'+form+'?access_token='+access_token
-urllib.resquest.urlretrieve(url, dest)
+urllib.request.urlretrieve(url, dest)
