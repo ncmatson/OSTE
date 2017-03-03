@@ -28,7 +28,10 @@ def doGrabber():
     lon = data['lon']
     zoom = data['zoom']
 
-    g = grabber.Grabber('app/static/img')
+    with open('app/static/secrets.txt') as f:
+        token = f.read()
+
+    g = grabber.Grabber('app/static/img', token)
     time = g.grab(lat, lon, zoom)
     edgeit('app/static/img/dg'+time+'.jpg')
 

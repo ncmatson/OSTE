@@ -4,10 +4,9 @@ import time
 class Grabber():
     """grabber sets up the api to grb images from the Digital globe
     site"""
-    def __init__(self, dest, form='jpg'):
-        print('making a grabber')
+    def __init__(self, dest, token, form='jpg'):
         self.time = str(time.time())
-        self.token = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpdHRkOWk0ZDAwMTUzMG4yM2g5Nmhtb2wifQ.O-5kuQ4vKzy0lcuqMAbBMA'
+        self.token = token
         self.map_id = 'digitalglobe.nal0g75k'
 
         # location to store the grabbed images
