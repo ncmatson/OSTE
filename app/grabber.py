@@ -21,7 +21,6 @@ class Grabber():
             self.form = 'jpg90'
 
     def grab(self, lat, lon, zoom, size='512x512'):
-        # name = str(lat) + '_' + str(lon)
         name = 'dg'+self.time
         loc = str(lon) + ',' + str(lat) + ',' + str(zoom)
 
