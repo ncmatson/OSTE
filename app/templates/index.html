@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>hey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/stylesheet.css') }}">
+  </head>
+  <body>
+    <h1>OSTE</h1>
+    <div id="coord">
+      <div id="select">
+        lattitude: <input type="number" id="lat">
+        <select name="nors">
+          <option value="N">N</option>
+          <option vaule="S">S</option>
+        </select>
+        longintude: <input type="number" id="lon">
+        <select name="eorw">
+          <option value="E">E</option>
+          <option vaule="W">W</option>
+        </select>
+        <input type="button" name="submit" value="Submit" />
+      </div>
+
+      <div id="current"></div>
+    </div>
+
+    <div id="map"></div>
+    <form action="/grabber/" method="post" name="edgeit"></form>
+    <button id="edgebutton"  type="submit" form="edgeit">Edge it!</button>
+    <div id="processed">
+      <img id="edge" src="" alt="">
+    </div>
+
+    <script src="{{ url_for('static', filename = 'js/jqery.js')}}"></script>
+    <script src="{{ url_for('static', filename = 'js/oste.js')}}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmtQtm--1qdOXN3UTZk0-9B1FID2Fv9zg&callback=initMap"
+        async defer></script>
+  </body>
+</html>
