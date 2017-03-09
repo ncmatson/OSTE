@@ -20,6 +20,14 @@ def edgeit(img):
     edges = cv2.Canny(i,100,200)
     cv2.imwrite(img, edges)
 
+def segit(img):
+    i = cv2.imread(img)
+    gray = cv2.cvtColor(i,cv2.COLOR_BGR2GRAY)
+    cv2.imwrite('app/static/img/gray.jpg', gray)
+    ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+    # cv2.imwrite('app/static/img/sdg.jpg', thresh)
+    cv2.imwrite(img, thresh)
+
 @app.route('/grabber/', methods=['POST'])
 def doGrabber():
     rm('app/static/img', 'dg*')
@@ -33,7 +41,8 @@ def doGrabber():
 
     g = grabber.Grabber('app/static/img', token)
     time = g.grab(lat, lon, zoom)
-    edgeit('app/static/img/dg'+time+'.jpg')
+    # edgeit('app/static/img/dg'+time+'.jpg')
+    segit('app/static/img/dg'+time+'.jpg')
 
     url = url_for('static', filename='img/dg'+time+'.jpg')
     return url
