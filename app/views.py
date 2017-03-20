@@ -25,7 +25,6 @@ def segit(img):
     gray = cv2.cvtColor(i,cv2.COLOR_BGR2GRAY)
     cv2.imwrite('app/static/img/gray.jpg', gray)
     ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
-    # cv2.imwrite('app/static/img/sdg.jpg', thresh)
     cv2.imwrite(img, thresh)
 
 @app.route('/grabber/', methods=['POST'])
