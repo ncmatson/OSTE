@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import os, re
+from subprocess import call
 
 @app.route('/')
 @app.route('/index')
@@ -27,9 +28,15 @@ def segit(img):
     ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
     cv2.imwrite(img, thresh)
 
+def predict(imgfolder):
+	#call(['echo $PWD'],shell=True)
+	#call(['app/sample.sh'],shell=True)
+    call(['app/prediction.sh'],shell=True)
+
 @app.route('/grabber/', methods=['POST'])
 def doGrabber():
     rm('app/static/img', 'dg*')
+    rm('app/ma_prediction_400','dg*')
     data = request.form
     lat = data['lat']
     lon = data['lon']
@@ -38,10 +45,12 @@ def doGrabber():
     with open('app/static/secrets.txt') as f:
         token = f.read()
 
-    g = grabber.Grabber('app/static/img', token)
+    g = grabber.Grabber('app/static/img', token,'png')
     time = g.grab(lat, lon, zoom)
     # edgeit('app/static/img/dg'+time+'.jpg')
-    segit('app/static/img/dg'+time+'.jpg')
+    # segit('app/static/img/dg'+time+'.jpg')
+    predict('$PWD/app/static/img/')
 
-    url = url_for('static', filename='img/dg'+time+'.jpg')
+    url = 'app/ma_prediction_400/dg%s.png'%(time)
+#url_for('ma_prediction_400', filename='/dg'+time+'.png')
     return url
