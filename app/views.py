@@ -4,7 +4,8 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import os, re
-from subprocess import call
+import subprocess
+#from config import MEDIA_FOLDER
 
 @app.route('/')
 @app.route('/index')
@@ -28,10 +29,13 @@ def segit(img):
     ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
     cv2.imwrite(img, thresh)
 
-def predict(imgfolder):
+
+def predict(time):
 	#call(['echo $PWD'],shell=True)
 	#call(['app/sample.sh'],shell=True)
-    call(['app/prediction.sh'],shell=True)
+    process = subprocess.call(['./app/prediction.sh'],shell=True)
+    process2 = subprocess.call(['cp','app/ma_prediction_400/dg%s.png'%(time),'app/static/css/images/dg%s.png'%(time)],shell=True)
+     
 
 @app.route('/grabber/', methods=['POST'])
 def doGrabber():
@@ -49,8 +53,7 @@ def doGrabber():
     time = g.grab(lat, lon, zoom)
     # edgeit('app/static/img/dg'+time+'.jpg')
     # segit('app/static/img/dg'+time+'.jpg')
-    predict('$PWD/app/static/img/')
-
-    url = 'app/ma_prediction_400/dg%s.png'%(time)
+    url = predict(time)
+    #url = url_for('.index',filename='ma_prediction_400/dg%s.png'%(time))
 #url_for('ma_prediction_400', filename='/dg'+time+'.png')
     return url
