@@ -16,7 +16,7 @@ from multiprocessing import Queue
 
 import numpy as np
 from chainer import Variable
-from chainer import cuda
+#from chainer import cuda
 from chainer import serializers
 
 import cv2 as cv
@@ -81,7 +81,8 @@ def tile_patches(args, canvas, queue):
 
 
 def get_predict(args, ortho, model):
-    xp = cuda.cupy if args.gpu >= 0 else np
+    #xp = cuda.cupy if args.gpu >= 0 else np
+    xp = np
     args.h_limit, args.w_limit = ortho.shape[0], ortho.shape[1]
     h_num = int(np.floor(args.h_limit / args.map_size))
     w_num = int(np.floor(args.w_limit / args.map_size))
@@ -114,7 +115,8 @@ def get_predict(args, ortho, model):
             xp.asarray(minibatch, dtype=xp.float32), volatile=True)
         preds = model(minibatch, None).data
         if args.gpu >= 0:
-            preds = xp.asnumpy(preds)
+            #preds = xp.asnumpy(preds)
+            print('gpu arg called, but no functionality provided')
         [preds_queue.put(pred) for pred in preds]
 
     preds_queue.put(None)
@@ -134,9 +136,10 @@ if __name__ == '__main__':
     model = imp.load_source(model_fn.split('.')[0], args.model).model
     serializers.load_hdf5(args.param, model)
     if args.gpu >= 0:
-        cuda.get_device(args.gpu).use()
-        model.to_gpu()
-    model.train = False
+        #cuda.get_device(args.gpu).use()
+        #model.to_gpu()
+        print('gpu called, but functionality has been removed')
+    #model.train = False
 
     epoch = re.search('epoch-([0-9]+)', args.param).groups()[0]
     if args.offset > 1:
@@ -153,6 +156,7 @@ if __name__ == '__main__':
         out_fn = '{}/{}.png'.format(
             out_dir, os.path.splitext(os.path.basename(fn))[0])
         print('{}/{}.png'.format(out_dir, os.path.splitext(os.path.basename(fn))[0]))
+        print(pred.shape)
         cv.imwrite(out_fn, pred * 255)
 
         out_fn = '{}/{}.npy'.format(
