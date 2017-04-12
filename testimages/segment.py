@@ -20,7 +20,8 @@ sure_bg = cv2.dilate(opening,kernel,iterations=3)
 
 #Finding foreground
 #fast distance transform L2 size 3
-binDist = cv2.distanceTransform(opening,cv2.DIST_L2,5);
+#binDist = cv2.distanceTransform(opening,cv2.DIST_L2,5);
+binDist = opening
 _,sure_fg = cv2.threshold(binDist,0.7*binDist.max(),255,0);
 
 #unknown area
@@ -38,9 +39,16 @@ markers[unknown==255] = 0
 
 markers = cv2.watershed(img,markers)
 
-binimg[markers == -1] = 255
+binimgTransform = binimg;
+binimgTransform[markers == -1] = 255
 out = np.zeros(img.shape,dtype=np.uint8)
 out[binimg == 255] = [0,0,255]
 out[markers==-1] = [255,0,0]
 cv2.imwrite('greendisttransform.png',out)
 
+#try findContours
+im2, contours, hierarchy = cv2.findContours(binimg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_L1)
+out2 = np.zeros(img.shape,dtype=np.uint8)
+out2[binimg == 255] = [0,0,255]
+cv2.drawContours(out2,contours, -1, (0,255,255), 3)
+cv2.imwrite('contours.png',out2)
