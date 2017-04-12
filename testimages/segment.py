@@ -53,9 +53,9 @@ out2[binimg == 255] = [0,0,255]
 cv2.drawContours(out2,contours, -1, (0,255,255), 3)
 cv2.imwrite('contours.png',out2)
 
-# find the moments of each object
-# M = np.zeros(len(contours))
-for c in contours:
+# find the center and area of each object
+area = np.zeros(len(contours))
+for i, c in enumerate(contours):
     r = random.randint(20,200)
     g = random.randint(20,200)
     b = random.randint(20,200)
@@ -67,4 +67,6 @@ for c in contours:
         cy = int(m['m01']/m['m00'])
         cv2.circle(out2, (cx,cy), 5, [255,255, 255])
 
+        area[i] = cv2.contourArea(c)
+print(area)
 cv2.imwrite('contours.png', out2)
