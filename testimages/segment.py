@@ -40,8 +40,6 @@ markers[unknown==255] = 0
 
 markers = cv2.watershed(img,markers)
 
-binimgTransform = binimg;
-binimgTransform[markers == -1] = 255
 out = np.zeros(img.shape,dtype=np.uint8)
 out[binimg == 255] = [0,0,255]
 out[markers==-1] = [255,0,0]
