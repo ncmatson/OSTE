@@ -7,3 +7,5 @@ python $PWD/app/predict.py \
 --channels 3 \
 --offset 8 \
 --gpu 0 &
+
+

@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import os, re
 import subprocess
+import segment
 #from config import MEDIA_FOLDER
 
 @app.route('/')
@@ -34,8 +35,9 @@ def predict(time):
 	#call(['echo $PWD'],shell=True)
 	#call(['app/sample.sh'],shell=True)
     process = subprocess.call(['./app/prediction.sh'],shell=True)
-    process2 = subprocess.call(['cp','app/ma_prediction_400/dg%s.png'%(time),'app/static/css/images/dg%s.png'%(time)],shell=True)
-     
+    #process2 = subprocess.call(['cp','app/ma_prediction_400/dg%s.png'%(time),'app/static/css/images/dg%s.png'%(time)],shell=True)
+    segment.segmentation('app/ma_prediction_400/dg%s.png'%(time),'app/static/img/dg%s.png'%(time))
+    return process2.wait()
 
 @app.route('/grabber/', methods=['POST'])
 def doGrabber():
@@ -53,7 +55,10 @@ def doGrabber():
     time = g.grab(lat, lon, zoom)
     # edgeit('app/static/img/dg'+time+'.jpg')
     # segit('app/static/img/dg'+time+'.jpg')
-    url = predict(time)
+    delay = predict(time)
+    segment.segmentation('app/ma_predication/dg%s.png'%(time),'app/static/img/dg%s.png'%(time))
+
+    
     #url = url_for('.index',filename='ma_prediction_400/dg%s.png'%(time))
 #url_for('ma_prediction_400', filename='/dg'+time+'.png')
-    return url
+    #return url

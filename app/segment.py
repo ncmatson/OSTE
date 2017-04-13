@@ -8,7 +8,7 @@ def segmentation(fin, fout):
 	#Gchan = cv2.cvtColor(Gchan, cv2.COLOR_BGR2GRAY)
 	# 0.6*255 60% confidence of building
 	_,binimg = cv2.threshold(Gchan,153,255,cv2.THRESH_BINARY)
-	binAdaptimg = cv2.adaptiveThreshold(Gchan,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,51,-2)
+	#binAdaptimg = cv2.adaptiveThreshold(Gchan,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,51,-2)
 
 	#cv2.imwrite('greenthresh.png',binimg)
 	#cv2.imwrite('greengausthresh.png',binAdaptimg)
@@ -69,5 +69,6 @@ def segmentation(fin, fout):
 		    cv2.circle(out2, (cx,cy), 5, [255,255, 255])
 
 		    area[i] = cv2.contourArea(c)
+            
 	print(area)
-	cv2.imwrite(fout,out2)
+	cv2.imwrite('contours.png', fout)
