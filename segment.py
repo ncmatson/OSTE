@@ -69,6 +69,9 @@ def segmentation(fin, fout):
 		    cv2.circle(out2, (cx,cy), 5, [255,255, 255])
 
 		    area[i] = cv2.contourArea(c)
-            
+
 	print(area)
-	cv2.imwrite('contours.png', fout)
+	cv2.imwrite(fout, out2)
+	return(area)
+
+#segmentation('testimages/dg1490743858.59531.png','testimages/hello.png')

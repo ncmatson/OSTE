@@ -6,6 +6,6 @@ python $PWD/app/predict.py \
 --test_sat_dir $PWD/app/static/img \
 --channels 3 \
 --offset 8 \
---gpu 0 &
+--gpu 0 
 
 

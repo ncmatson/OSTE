@@ -31,13 +31,16 @@ def segit(img):
     cv2.imwrite(img, thresh)
 
 
-def predict(time):
+def predict(time, img):
 	#call(['echo $PWD'],shell=True)
 	#call(['app/sample.sh'],shell=True)
-    process = subprocess.call(['./app/prediction.sh'],shell=True)
+    #process = subprocess.call(['./app/prediction.sh'],shell=True)
+    val = os.system('./app/prediction.sh')
+    print(val)
+    print('testtext')
     #process2 = subprocess.call(['cp','app/ma_prediction_400/dg%s.png'%(time),'app/static/css/images/dg%s.png'%(time)],shell=True)
-    segment.segmentation('app/ma_prediction_400/dg%s.png'%(time),'app/static/img/dg%s.png'%(time))
-    return process2.wait()
+    areas = segment.segmentation('app/ma_prediction_400/dg%s.png'%(time),img)
+    return areas
 
 @app.route('/grabber/', methods=['POST'])
 def doGrabber():
@@ -55,10 +58,11 @@ def doGrabber():
     time = g.grab(lat, lon, zoom)
     # edgeit('app/static/img/dg'+time+'.jpg')
     # segit('app/static/img/dg'+time+'.jpg')
-    delay = predict(time)
-    segment.segmentation('app/ma_predication/dg%s.png'%(time),'app/static/img/dg%s.png'%(time))
+    areas = predict(time, 'app/static/img/dg'+time+'.jpg')
+    #segment.segmentation('app/ma_predication/dg%s.png'%(time),'app/static/img/dg%s.png'%(time))
 
-    
-    #url = url_for('.index',filename='ma_prediction_400/dg%s.png'%(time))
-#url_for('ma_prediction_400', filename='/dg'+time+'.png')
-    #return url
+    url = url_for('static', filename='img/dg'+time+'.jpg')
+    # url = url_for('.index',filename='static/img/dg%s.png'%(time))
+    #url_for('ma_prediction_400', filename='/dg'+time+'.png')
+    #return (url, areas)
+    return url
