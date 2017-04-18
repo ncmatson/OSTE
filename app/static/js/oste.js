@@ -26,8 +26,15 @@ $("#edgebutton").on('click', function(){
 
   var z = map.getZoom();
   $.post(url, {'lat':lat, 'lon':lon, 'zoom':z}, function(result){
-    $("#edge").attr('src', result);
-  });
+    console.log(result.url);
+    console.log(result.areas);
+    $("#edge").attr('src', result.url);
+    console.log(result.areas.length);
+    for (i = 0; i < result.areas.length; ++i){
+      var x = "<tr><td>"+(i+1)+"</td><td>"+result.areas[i]+"</td></tr>";
+      $("#areas").append(x);
+    }
+  }, "json");
 });
 
 function updateCoord() {

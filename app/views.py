@@ -1,5 +1,5 @@
 from app import app, grabber
-from flask import render_template, request, url_for
+from flask import render_template, request, url_for, jsonify
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
@@ -19,9 +19,11 @@ def rm(dir, pattern):
             os.remove(os.path.join(dir, f))
 
 def edgeit(img):
-    i = cv2.imread(img)
-    edges = cv2.Canny(i,100,200)
-    cv2.imwrite(img, edges)
+    # i = cv2.imread(img)
+    # edges = cv2.Canny(i,100,200)
+    # cv2.imwrite(img, edges)
+    areas = segment.segmentation(img,img)
+    return areas.tolist()
 
 def segit(img):
     i = cv2.imread(img)
@@ -56,13 +58,12 @@ def doGrabber():
 
     g = grabber.Grabber('app/static/img', token,'png')
     time = g.grab(lat, lon, zoom)
-    # edgeit('app/static/img/dg'+time+'.jpg')
-    # segit('app/static/img/dg'+time+'.jpg')
-    areas = predict(time, 'app/static/img/dg'+time+'.jpg')
-    #segment.segmentation('app/ma_predication/dg%s.png'%(time),'app/static/img/dg%s.png'%(time))
+    areas = edgeit('app/static/img/dg'+time+'.png')
+    # areas = predict(time, 'app/static/img/dg'+time+'.jpg')
 
-    url = url_for('static', filename='img/dg'+time+'.jpg')
-    # url = url_for('.index',filename='static/img/dg%s.png'%(time))
-    #url_for('ma_prediction_400', filename='/dg'+time+'.png')
-    #return (url, areas)
-    return url
+    url = url_for('static', filename='img/dg'+time+'.png')
+
+
+
+    return jsonify(url=url,
+                   areas=areas)

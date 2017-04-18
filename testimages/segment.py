@@ -69,5 +69,5 @@ def segmentation(fin, fout):
 		    cv2.circle(out2, (cx,cy), 5, [255,255, 255])
 
 		    area[i] = cv2.contourArea(c)
-	print(area)
+	print(len(area))
 	cv2.imwrite(fout,out2)
