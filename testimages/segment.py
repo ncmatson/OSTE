@@ -66,7 +66,8 @@ def segmentation(fin, fout):
 		if (m['m10'] > 0):
 		    cx = int(m['m10']/m['m00'])
 		    cy = int(m['m01']/m['m00'])
-		    cv2.circle(out2, (cx,cy), 5, [255,255, 255])
+		    # cv2.circle(out2, (cx,cy), 5, [255,255, 255])
+			cv2.putText(out2, str(i), (cx,cy), cv2.FONT_HERSHEY_PLAIN, 1, [255-b, 255-g, 255-r]),,3)
 
 		    area[i] = cv2.contourArea(c)
 	print(len(area))
