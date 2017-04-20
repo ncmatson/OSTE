@@ -39,11 +39,16 @@ def predict(time, img):
     #process = subprocess.call(['./app/prediction.sh'],shell=True)
     #need to create copy of image to work with interpolation
     #cv2.imwrite('wow'+img,)
+    input = cv2.imread(img)
+    input = cv2.resize(input,(0,0),input,fx=2,fy=2,interpolation=cv2.INTER_CUBIC)
+    print(input.shape[:2])
+    cv2.imwrite('app/static/img/interpdg%s.png'%(time),input)#create copy for testing interp
     val = os.system('./app/prediction.sh')
     print(val)
     print('testtext')
     #process2 = subprocess.call(['cp','app/ma_prediction_400/dg%s.png'%(time),'app/static/css/images/dg%s.png'%(time)],shell=True)
     areas = segment.segmentation('app/ma_prediction_400/dg%s.png'%(time),img)
+    areas2 = segment.segmentation('app/ma_prediction_400/interpdg%s.png'%(time),'app/static/img/interpdg'+time+'.png')
     return areas.tolist()
 
 @app.route('/grabber/', methods=['POST'])

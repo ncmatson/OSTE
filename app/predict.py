@@ -114,9 +114,9 @@ def get_predict(args, ortho, model):
         minibatch = Variable(
             xp.asarray(minibatch, dtype=xp.float32), volatile=True)
         preds = model(minibatch, None).data
-        if args.gpu >= 0:
+        #if args.gpu >= 0:
             #preds = xp.asnumpy(preds)
-            print('gpu arg called, but no functionality provided')
+            #print('gpu arg called, but no functionality provided')
         [preds_queue.put(pred) for pred in preds]
 
     preds_queue.put(None)
@@ -135,10 +135,10 @@ if __name__ == '__main__':
     model_fn = os.path.basename(args.model)
     model = imp.load_source(model_fn.split('.')[0], args.model).model
     serializers.load_hdf5(args.param, model)
-    if args.gpu >= 0:
+    #if args.gpu >= 0:
         #cuda.get_device(args.gpu).use()
         #model.to_gpu()
-        print('gpu called, but functionality has been removed')
+        #print('gpu called, but functionality has been removed')
     #model.train = False
 
     epoch = re.search('epoch-([0-9]+)', args.param).groups()[0]
