@@ -37,12 +37,14 @@ def predict(time, img):
 	#call(['echo $PWD'],shell=True)
 	#call(['app/sample.sh'],shell=True)
     #process = subprocess.call(['./app/prediction.sh'],shell=True)
+    #need to create copy of image to work with interpolation
+    #cv2.imwrite('wow'+img,)
     val = os.system('./app/prediction.sh')
     print(val)
     print('testtext')
     #process2 = subprocess.call(['cp','app/ma_prediction_400/dg%s.png'%(time),'app/static/css/images/dg%s.png'%(time)],shell=True)
     areas = segment.segmentation('app/ma_prediction_400/dg%s.png'%(time),img)
-    return areas
+    return areas.tolist()
 
 @app.route('/grabber/', methods=['POST'])
 def doGrabber():
@@ -58,8 +60,8 @@ def doGrabber():
 
     g = grabber.Grabber('app/static/img', token,'png')
     time = g.grab(lat, lon, zoom)
-    areas = edgeit('app/static/img/dg'+time+'.png')
-    # areas = predict(time, 'app/static/img/dg'+time+'.jpg')
+    #areas = edgeit('app/static/img/dg'+time+'.png')
+    areas = predict(time, 'app/static/img/dg'+time+'.png')
 
     url = url_for('static', filename='img/dg'+time+'.png')
 
