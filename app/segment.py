@@ -2,6 +2,25 @@ import numpy as np
 import cv2
 import random
 
+def dumb_contours(fin,fout):
+    # us open_cv to get contours and their areas
+    img = cv2.imread(fin)
+
+    # crop to size of neural net output
+    img = img[27:484,27:484]
+    cv2.imwrite(fin,img)
+    features = segmentation(fin,fout)
+    return features #returns contours
+
+def predict(time, fin, fout):
+    # run prediction script
+    val = os.system('./app/prediction.sh')
+
+    features = segmentation(fin,fout)
+
+    os.system('mv app/ma_prediction_400/dg%s.png app/static/img/nn_base_dg%s.png'%(time,time))
+    return features #returns contours
+
 def segmentation(fin, fout):
 	img = cv2.imread(fin)
 	Bchan,Gchan,Rchan = cv2.split(img)
