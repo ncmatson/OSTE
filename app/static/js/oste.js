@@ -3,7 +3,7 @@ var ratio;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 32.84445431845944, lng: -96.78474766922},
-    zoom: 18,
+    zoom: 15,
     tilt: 0,
     mapTypeId: 'satellite',
     rotateControl: false,
@@ -37,7 +37,9 @@ $("#edgebutton").on('click', function(){
   $.post(url, {'lat':lat, 'lon':lon, 'zoom':z}, function(result){
     // update the location for the image showing contours
     $("#edge").attr('src', result.url);
-
+    $("#nn").attr('src',result.url_nn);
+    $("#dumy").attr('src',result.url_dum);
+    $("#good").attr('src',result.url_good);
     // clear the HTML listing the areas
     $("#areas").html("");
 

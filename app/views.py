@@ -1,11 +1,10 @@
-from app import app, grabber
+from app import app, grabber, merge, segment
 from flask import render_template, request, url_for, jsonify
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import os, re
 import subprocess
-import segment
 #from config import MEDIA_FOLDER
 
 @app.route('/')
@@ -18,12 +17,15 @@ def rm(dir, pattern):
         if re.search(pattern, f):
             os.remove(os.path.join(dir, f))
 
-def get_contours(img):
+def get_contours(fin,fout):
     # us open_cv to get contours and their areas
-    features = segment.segmentation(img,img)
-    return features
+    img = cv2.imread(fin)
+    img = img[27:484,27:484]
+    cv2.imwrite(fin,img)
+    features = segment.segmentation(fin,fout)
+    return features #returns contours
 
-def classify(time, img):
+def classify(time, fin, fout):
     #need to create copy of image to work with interpolation
     # i = cv2.imread(img)
     # input = cv2.resize(i,(0,0),i,fx=2,fy=2,interpolation=cv2.INTER_CUBIC)
@@ -33,9 +35,11 @@ def classify(time, img):
     # run prediction script
     val = os.system('./app/prediction.sh')
 
-    features = segment.segmentation('app/ma_prediction_400/dg%s.png'%(time),img)
+    features = segment.segmentation(fin,fout)
     # un_areas = segment.segmentation('app/ma_prediction_400/interpdg%s.png'%(time),'app/static/img/interpdg'+time+'.png')
-    return features
+    os.system('mv app/ma_prediction_400/dg%s.png app/static/img/nn_base_dg%s.png'%(time,time))
+    return features #returns contours
+
 
 @app.route('/grabber/', methods=['POST'])
 def doGrabber():
@@ -52,16 +56,27 @@ def doGrabber():
     g = grabber.Grabber('app/static/img', token,'png')
     time = g.grab(lat, lon, zoom)
 
-    # dumb areas are from the image that didn't go through the prediciton
-    dumb_areas = get_contours('app/static/img/dg'+time+'.png')
-
     # smart areas are in the image that went through the prediction
-    # smart_areas = classify(time, 'app/static/img/dg'+time+'.png')
+    smart_contours = classify(time,'app/ma_prediction_400/dg%s.png'%(time), 'app/static/img/nn_dg'+time+'.png')
+    smart_areas = segment.get_areas(smart_contours.values())
 
+    # dumb areas are from the image that didn't go through the prediciton
+    dumb_contours = get_contours('app/static/img/dg'+time+'.png','app/static/img/dumy_dg'+time+'.png')
+    dumb_areas = segment.get_areas(dumb_contours.values())
 
+    buildings = merge.intersect(smart_contours, dumb_contours)
+    merge.mkimage('app/static/img/dg'+time+'.png','app/static/img/merge_dg'+time+'.png', buildings)
+    areas = segment.get_areas(buildings.values())
 
-    url = url_for('static', filename='img/dg'+time+'.png')
+    # url_nn = '/ma_prediction_400/nn_dg%s.png'%(time)
+    url_contour = url_for('static', filename='img/dumy_dg'+time+'.png')
+    url_nn = url_for('static', filename='img/nn_dg'+time+'.png')
+    url = url_for('static', filename='img/nn_base_dg'+time+'.png')
+    url_good = url_for('static', filename='img/merge_dg'+time+'.png')
 
-    return jsonify(url=url,
-                   areas=list(dumb_areas.values())
+    # return jsonify(url=url,
+    #                areas=list(dumb_areas.values())
+    #                )
+    return jsonify(url=url,url_nn=url_nn, url_dum=url_contour, url_good=url_good,
+                   areas=areas
                    )
