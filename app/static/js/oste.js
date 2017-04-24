@@ -23,23 +23,25 @@ $("#edgebutton").on('click', function(){
 
   // get center point
   var latlon = map.getCenter();
-  console.log('center ', latlon.lat(), latlon.lng())
   var lat = latlon.lat();
   var lon = latlon.lng();
 
   // get NE corner to calculate px/m ratio
   var bounds = map.getBounds();
   var corner = bounds.getNorthEast();
-  console.log('corner ', corner.lat(), corner.lng());
-  ratio = haversine(lat, lon, corner.lat(), corner.lng());
+
+  // calculate the ratio between pixels and meters
+  ratio = get_ratio(lat, lon, corner.lat(), corner.lng());
 
   var z = map.getZoom();
   $.post(url, {'lat':lat, 'lon':lon, 'zoom':z}, function(result){
-    // update the location for the image showing contours
-    $("#edge").attr('src', result.url);
-    $("#nn").attr('src',result.url_nn);
-    $("#dumy").attr('src',result.url_dum);
-    $("#good").attr('src',result.url_good);
+    // set images
+
+    $("#edge").attr('src', result.url_smart);  // contours of neural net image
+    $("#nn").attr('src',result.url_nn); // base output of neural net
+    $("#dumy").attr('src',result.url_dumb); // contours of unprocessed image
+    $("#good").attr('src',result.url_merge); // dumb contours that match smart locations
+
     // clear the HTML listing the areas
     $("#areas").html("");
 
@@ -63,9 +65,10 @@ Number.prototype.toRad = function() {
    return this * Math.PI / 180;
 }
 
-function haversine(lat1, lon1, lat2, lon2) {
+// uses the haversine formula to determine the ratio between pixels and surface distance
+function get_ratio(lat1, lon1, lat2, lon2) {
   var R = 6371; // km
-  //has a problem with the .toRad() method below.
+
   var x1 = lat2-lat1;
   var dLat = x1.toRad();
   var x2 = lon2-lon1;
@@ -75,10 +78,8 @@ function haversine(lat1, lon1, lat2, lon2) {
                   Math.sin(dLon/2) * Math.sin(dLon/2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var half_diagonal_m = R * c * 1000;
-  console.log('distance ', half_diagonal_m)
 
   var half_diagonal_px = (512/2) * Math.sqrt(2);
-  console.log('pixel distance ', half_diagonal_px);
 
   return half_diagonal_m/half_diagonal_px;
 
