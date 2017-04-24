@@ -48,13 +48,13 @@ def segmentation(fin, fout):
 
 	#try findContours
 	im2, contours, hierarchy = cv2.findContours(binimg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-	print(len(contours))
 	out2 = np.zeros(img.shape,dtype=np.uint8)
 	out2[binimg == 255] = [0,0,255]
 	cv2.drawContours(out2,contours, -1, (0,255,255), 3)
-	#cv2.imwrite('contours.png',out2)
 
 	# find the center and area of each object
+	# a feature is defined by its center (cx, cy) and its area
+	features = {}
 	area = np.zeros(len(contours))
 	for i, c in enumerate(contours):
 		r = random.randint(20,200)
@@ -64,12 +64,20 @@ def segmentation(fin, fout):
 		cv2.fillPoly(out2, pts=[c], color=[r, g, b])
 		m = cv2.moments(c)
 		if (m['m10'] > 0):
+			# center location of each contour
 			cx = int(m['m10']/m['m00'])
 			cy = int(m['m01']/m['m00'])
-			# cv2.circle(out2, (cx,cy), 5, [255,255, 255])
+
+			#mark each contour with a circle and a numeric label
+			cv2.circle(out2, (cx,cy), 5, [255,255, 255])
 			cv2.putText(out2, str(i), (cx,cy), cv2.FONT_HERSHEY_PLAIN, 1, [255-b, 255-g, 255-r],1,8)
-			area[i] = cv2.contourArea(c)
-	print(len(area))
+
+			# add the location:area pair to list of features
+			area = cv2.contourArea(c)
+			if area > 0:
+				features[(cx,cy)] = area
+			# area[i] = cv2.contourArea(c)
+
 	cv2.imwrite(fout,out2)
 
-	return area
+	return features

@@ -18,38 +18,24 @@ def rm(dir, pattern):
         if re.search(pattern, f):
             os.remove(os.path.join(dir, f))
 
-def edgeit(img):
-    # i = cv2.imread(img)
-    # edges = cv2.Canny(i,100,200)
-    # cv2.imwrite(img, edges)
-    areas = segment.segmentation(img,img)
-    return areas.tolist()
+def get_contours(img):
+    # us open_cv to get contours and their areas
+    features = segment.segmentation(img,img)
+    return features
 
-def segit(img):
-    i = cv2.imread(img)
-    gray = cv2.cvtColor(i,cv2.COLOR_BGR2GRAY)
-    cv2.imwrite('app/static/img/gray.jpg', gray)
-    ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
-    cv2.imwrite(img, thresh)
-
-
-def predict(time, img):
-	#call(['echo $PWD'],shell=True)
-	#call(['app/sample.sh'],shell=True)
-    #process = subprocess.call(['./app/prediction.sh'],shell=True)
+def classify(time, img):
     #need to create copy of image to work with interpolation
-    #cv2.imwrite('wow'+img,)
-    input = cv2.imread(img)
-    input = cv2.resize(input,(0,0),input,fx=2,fy=2,interpolation=cv2.INTER_CUBIC)
-    print(input.shape[:2])
-    cv2.imwrite('app/static/img/interpdg%s.png'%(time),input)#create copy for testing interp
+    # i = cv2.imread(img)
+    # input = cv2.resize(i,(0,0),i,fx=2,fy=2,interpolation=cv2.INTER_CUBIC)
+    # print(input.shape[:2])
+    # cv2.imwrite('app/static/img/interpdg%s.png'%(time),i)#create copy for testing interp
+
+    # run prediction script
     val = os.system('./app/prediction.sh')
-    print(val)
-    print('testtext')
-    #process2 = subprocess.call(['cp','app/ma_prediction_400/dg%s.png'%(time),'app/static/css/images/dg%s.png'%(time)],shell=True)
-    areas = segment.segmentation('app/ma_prediction_400/dg%s.png'%(time),img)
-    areas2 = segment.segmentation('app/ma_prediction_400/interpdg%s.png'%(time),'app/static/img/interpdg'+time+'.png')
-    return areas.tolist()
+
+    features = segment.segmentation('app/ma_prediction_400/dg%s.png'%(time),img)
+    # un_areas = segment.segmentation('app/ma_prediction_400/interpdg%s.png'%(time),'app/static/img/interpdg'+time+'.png')
+    return features
 
 @app.route('/grabber/', methods=['POST'])
 def doGrabber():
@@ -65,12 +51,17 @@ def doGrabber():
 
     g = grabber.Grabber('app/static/img', token,'png')
     time = g.grab(lat, lon, zoom)
-    #areas = edgeit('app/static/img/dg'+time+'.png')
-    areas = predict(time, 'app/static/img/dg'+time+'.png')
+
+    # dumb areas are from the image that didn't go through the prediciton
+    dumb_areas = get_contours('app/static/img/dg'+time+'.png')
+
+    # smart areas are in the image that went through the prediction
+    # smart_areas = classify(time, 'app/static/img/dg'+time+'.png')
+
+
 
     url = url_for('static', filename='img/dg'+time+'.png')
 
-
-
     return jsonify(url=url,
-                   areas=areas)
+                   areas=list(dumb_areas.values())
+                   )
