@@ -3,7 +3,7 @@ var ratio;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 32.84445431845944, lng: -96.78474766922},
-    zoom: 15,
+    zoom: 18,
     tilt: 0,
     mapTypeId: 'satellite',
     rotateControl: false,

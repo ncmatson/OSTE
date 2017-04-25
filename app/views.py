@@ -50,7 +50,9 @@ def doGrabber():
     url_dumb = url_for('static', filename='img/dumy_dg'+time+'.png')
     url_merge = url_for('static', filename='img/merge_dg'+time+'.png')
 
-    # for cameron
+    # # for cameron
+    # dumb_contours = segment.dumb_contours('app/static/img/dg'+time+'.png','app/static/img/dumy_dg'+time+'.png')
+    # dumb_areas = segment.get_areas(dumb_contours.values())
     # areas = dumb_areas
     # url_nn = ''
     # url_smart = ''
