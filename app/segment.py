@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import random
+import os
 
 def dumb_contours(fin,fout):
     # us open_cv to get contours and their areas
