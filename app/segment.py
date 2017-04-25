@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import random
 from collections import OrderedDict
+import os
 
 def dumb_contours(fin,fout):
     # us open_cv to get contours and their areas
@@ -39,7 +40,7 @@ def segmentation(fin, fout):
 
     # find the center and area of each object
     # a feature is defined by its center (cx, cy) and its area
-    # features = {}
+
     features = OrderedDict()
     area = np.zeros(len(contours))
     # label for each non-zero contour

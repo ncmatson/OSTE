@@ -59,6 +59,6 @@ def doGrabber():
     # url_merge = ''
     # url_dumb = url_for('static', filename='img/dumy_dg'+time+'.png')
 
-    return jsonify(url=url_nn, url_smart=url_smart, url_dumb=url_dumb, url_merge=url_merge,
+    return jsonify(url_nn=url_nn, url_smart=url_smart, url_dumb=url_dumb, url_merge=url_merge,
                    areas=areas
                    )
