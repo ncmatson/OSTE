@@ -1,5 +1,9 @@
 var map;
 var ratio;
+var base = false;
+var base_url;
+var layer_url;
+
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 32.84445431845944, lng: -96.78474766922},
@@ -40,7 +44,10 @@ $("#edgebutton").on('click', function(){
     $("#edge").attr('src', result.url_smart);  // contours of neural net image
     $("#nn").attr('src',result.url_nn); // base output of neural net
     $("#dumy").attr('src',result.url_dumb); // contours of unprocessed image
-    $("#good").attr('src',result.url_merge); // dumb contours that match smart locations
+
+    base_url = result.url_base;
+    layer_url = result.url_merge;
+    $("#good").attr('src',layer_url); // dumb contours that match smart locations
 
     // clear the HTML listing the areas
     $("#areas").html("");
@@ -52,6 +59,17 @@ $("#edgebutton").on('click', function(){
       $("#areas").append(area);
     }
   }, "json");
+});
+
+$("#good").click(function() {
+  if (base == true){
+    $("#good").attr('src', layer_url);
+    base = false;
+  }
+  else{
+    $("#good").attr('src', base_url);
+    base = true;
+  }
 });
 
 function updateCoord() {

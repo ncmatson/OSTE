@@ -22,19 +22,21 @@ def intersect(smart,dumb):
     return sdic
 
 
-def mkimage(fin,fout,thecontours):
+def mkimage(fin,fout,thecontours,base=1):
     img = cv2.imread(fin)
     out = np.zeros(img.shape,dtype=np.uint8)
+    if(base == 1):
+        out = img
     i=0
     for loc in thecontours.keys():
         c = thecontours[loc]
         r = random.randint(20,200)
         g = random.randint(20,200)
         b = random.randint(20,200)
-        cv2.drawContours(img,[c],-1,(0,255,255),2)
-        cv2.fillPoly(img, pts=[c], color=[r, g, b])
-        cv2.circle(img, loc, 5, [255,255, 255])
-        cv2.putText(img, str(i), loc, cv2.FONT_HERSHEY_PLAIN, 1, [255-b, 255-g, 255-r],1,8)
+        cv2.drawContours(out,[c],-1,(0,255,255),2)
+        cv2.fillPoly(out, pts=[c], color=[r, g, b])
+        cv2.circle(out, loc, 5, [255,255, 255])
+        cv2.putText(out, str(i), loc, cv2.FONT_HERSHEY_PLAIN, 1, [255-b, 255-g, 255-r],1,8)
         i=i+1
 
-    cv2.imwrite(fout,img)
+    cv2.imwrite(fout,out)
