@@ -2,7 +2,7 @@ var map;
 var ratio;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 32.8451799255302, lng: -96.78439629983905},
+    center: {lat: 32.84468416978932, lng: -96.78363991689685},
     zoom: 19,
     tilt: 0,
     mapTypeId: 'satellite',
@@ -38,15 +38,23 @@ $("#edgebutton").on('click', function(){
     // set images
 
     $("#dumy").attr('src',result.url_dumb); // contours of unprocessed image
+    $("#drone").attr('src', result.url_drone);
 
     // clear the HTML listing the areas
-    $("#areas").html("");
+    $("#drone_areas").html("");
+    $("#dumb_areas").html("");
 
     // write the area for each contour to a table
-    for (i = 0; i < result.areas.length; ++i){
+    for (i = 0; i < result.dumb_areas.length; ++i){
       console.log('the ratio is ', ratio);
-      var area = "<tr><td>"+(i)+"</td><td>"+result.areas[i]*Math.pow(ratio,2)+"</td></tr>";
-      $("#areas").append(area);
+      var area = "<tr><td>"+(i)+"</td><td>"+result.dumb_areas[i]*Math.pow(ratio,2)+"</td></tr>";
+      $("#dumb_areas").append(area);
+    }
+
+    for (i = 0; i < result.drone_areas.length; ++i){
+      console.log('the ratio is ', ratio);
+      var area = "<tr><td>"+(i)+"</td><td>"+result.drone_areas[i]*Math.pow(ratio,2)+"</td></tr>";
+      $("#drone_areas").append(area);
     }
   }, "json");
 });
