@@ -2,8 +2,8 @@ var map;
 var ratio;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 32.84445431845944, lng: -96.78474766922},
-    zoom: 18,
+    center: {lat: 32.8451799255302, lng: -96.78439629983905},
+    zoom: 19,
     tilt: 0,
     mapTypeId: 'satellite',
     rotateControl: false,
@@ -37,10 +37,7 @@ $("#edgebutton").on('click', function(){
   $.post(url, {'lat':lat, 'lon':lon, 'zoom':z}, function(result){
     // set images
 
-    $("#edge").attr('src', result.url_smart);  // contours of neural net image
-    $("#nn").attr('src',result.url_nn); // base output of neural net
     $("#dumy").attr('src',result.url_dumb); // contours of unprocessed image
-    $("#good").attr('src',result.url_merge); // dumb contours that match smart locations
 
     // clear the HTML listing the areas
     $("#areas").html("");
@@ -79,7 +76,7 @@ function get_ratio(lat1, lon1, lat2, lon2) {
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var half_diagonal_m = R * c * 1000;
 
-  var half_diagonal_px = (512/2) * Math.sqrt(2);
+  var half_diagonal_px = 477.54;
 
   return half_diagonal_m/half_diagonal_px;
 

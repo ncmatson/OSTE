@@ -9,7 +9,7 @@ def dumb_contours(fin,fout):
     img = cv2.imread(fin)
 
     # crop to size of neural net output
-    img = img[27:484,27:484]
+    # img = img[27:484,27:484]
     cv2.imwrite(fin,img)
     features = segmentation(fin,fout)
     return features #returns contours
