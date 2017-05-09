@@ -7,3 +7,5 @@ To set up virtual environment install anaconda
 `conda install -c menpo opencv3`
 
 `source activate oste`
+
+`python run.py`
