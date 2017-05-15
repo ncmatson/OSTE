@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/stylesheet.css') }}">
   </head>
   <body>
-    <h1>OSTE</h1>
+    <h1>Open Source Terrain Extraction</h1>
     <div id="coord">
       <div id="select">
         lattitude: <input type="number" id="lat">
@@ -27,12 +27,24 @@
     <form action="/grabber/" method="post" name="edgeit"></form>
     <button id="edgebutton"  type="submit" form="edgeit">Segment it!</button>
     <div id="processed">
-      <img id="edge" src="" alt="">
-      <img id="nn" src="" alt="">
+      <p>Digital Globe</p>
       <img id="dumy" src="" alt="">
-      <img id="good" src="" alt="">
+      <p>Drone</p>
+      <img id="drone" src="" alt="">
     </div>
-    <table id="areas"></table>
+    <table id="areas">
+      <tr>
+        <td>Digital Globe</td>
+        <td>Drone</td>
+      <tr>
+        <td>
+          <table id="dumb_areas"></table>
+        </td>
+        <td>
+          <table id="drone_areas"></table>
+        </td>
+      </tr>
+    </table>
 
     <script src="{{ url_for('static', filename = 'js/jqery.js')}}"></script>
     <script src="{{ url_for('static', filename = 'js/oste.js')}}"></script>
