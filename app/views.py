@@ -49,6 +49,7 @@ def doGrabber():
     url_smart = url_for('static', filename='img/nn_dg'+time+'.png')
     url_dumb = url_for('static', filename='img/dumy_dg'+time+'.png')
     url_merge = url_for('static', filename='img/merge_dg'+time+'.png')
+    url_base = url_for('static', filename='img/dg'+time+'.png')
 
     # # for cameron
     # dumb_contours = segment.dumb_contours('app/static/img/dg'+time+'.png','app/static/img/dumy_dg'+time+'.png')
@@ -59,6 +60,6 @@ def doGrabber():
     # url_merge = ''
     # url_dumb = url_for('static', filename='img/dumy_dg'+time+'.png')
 
-    return jsonify(url_nn=url_nn, url_smart=url_smart, url_dumb=url_dumb, url_merge=url_merge,
+    return jsonify(url_nn=url_nn, url_smart=url_smart, url_dumb=url_dumb, url_merge=url_merge,url_base=url_base,
                    areas=areas
                    )

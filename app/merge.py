@@ -22,9 +22,11 @@ def intersect(smart,dumb):
     return sdic
 
 
-def mkimage(fin,fout,thecontours):
+def mkimage(fin,fout,thecontours,base=1):
     img = cv2.imread(fin)
     out = np.zeros(img.shape,dtype=np.uint8)
+    if(base == 1):
+        out = img
     i=0
     for loc in thecontours.keys():
         c = thecontours[loc]
